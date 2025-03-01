@@ -9,6 +9,8 @@
 #include <random>
 #include <array>
 #include <cmath>
+#include <dlfcn.h>
+#include <libgen.h> // dirname
 using namespace std;
 static const unsigned int global_seed = 35;
 static const double sqrt1_2 = sqrt(0.5);
@@ -123,4 +125,16 @@ inline double floor2(double x)
 {
     // floor to 2 decimal places
     return floor(x * 100.0) / 100.0;
+}
+
+inline std::string get_module_path() {
+    Dl_info dl_info;
+    if (dladdr((void*)&get_module_path, &dl_info) == 0) {
+        throw std::runtime_error("Failed to get module info");
+    }
+    
+    char* path_copy = strdup(dl_info.dli_fname); 
+    std::string dir(dirname(path_copy));
+    free(path_copy);
+    return dir;
 }

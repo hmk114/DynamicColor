@@ -47,7 +47,9 @@ float cosinSimilarity(int index1, int index2)
 void loadDifferenceInfo()
 {
     init = true;
-    ifstream c3file("static/c3_data.json");
+
+    std::string base_dir = get_module_path();
+    ifstream c3file(base_dir + "/static/c3_data.json");
     json c3data = json::parse(c3file);
     auto color = c3data["color"];
     for (auto i = 0; i < color.size(); i += 3)
@@ -81,7 +83,7 @@ void loadDifferenceInfo()
     auto start2 = clock();
     cout << "start init" << C << endl;
 
-    loadBinaryMatrix(cosin_difference, "static/cosin_difference.bin");
+    loadBinaryMatrix(cosin_difference, base_dir + "/static/cosin_difference.bin");
     auto end2 = clock();
     cout << "init time: " << (double)(end2 - start2) / CLOCKS_PER_SEC << "s" << cosin_difference[6125][5397] << " " << cosinSimilarity(6125, 5397) << endl;
 }
